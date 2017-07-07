@@ -11,7 +11,8 @@ import {
   Text,
   View
 } from 'react-native';
-import {MapView} from 'react-native-amap3d'
+import {MapView} from 'react-native-amap3d';
+import { Button, Icon } from 'antd-mobile';
 
 export default class amap extends Component {
   render() {
@@ -26,6 +27,9 @@ export default class amap extends Component {
             >
 
             </MapView>
+            <Button>
+                <Icon type={'\ue660'}/>
+            </Button>
         </View>
     );
   }
