@@ -16,6 +16,9 @@
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:theme="@style/AppTheme">
+        <meta-data
+                android:name="com.amap.api.v2.apikey"
+                android:value="dee57547eea58b8599360570d56d1cfb"/>
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
