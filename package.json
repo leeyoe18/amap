@@ -8,9 +8,11 @@
   },
   "dependencies": {
     "antd-mobile": "^1.4.1",
+    "native-echarts": "^0.3.0",
     "react": "16.0.0-alpha.12",
     "react-native": "0.46.0",
-    "react-native-amap3d": "^0.2.0-alpha.5"
+    "react-native-amap3d": "^0.2.0-alpha.5",
+    "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {
     "babel-jest": "20.0.3",
