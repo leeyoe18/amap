@@ -107,9 +107,18 @@ export default class BaiduMapDemo extends Component {
             items.push(`${year} (${item.length})`);
         }
         let type = (
-            <AMap/>
+            <View>
+                <Text>正在加载数据</Text>
+            </View>
         );
-
+        if(total > 0) {
+            type = (
+                <AMap
+                    data={this.state.mapData}
+                    navigation={this.props.navigation}
+                />
+            );
+        }
         if(this.state.type === 'table') {
             const columns = this.state.header.map(data => {
                 let render = null;

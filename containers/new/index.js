@@ -103,7 +103,10 @@ export default class BaiduMapDemo extends Component {
             items.push(`${year} (${item.length})`);
         }
         let type = (
-            <AMap/>
+            <AMap
+                data={this.state.mapData}
+                navigation={this.props.navigation}
+            />
         );
 
         if(this.state.type === 'table') {

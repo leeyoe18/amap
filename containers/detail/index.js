@@ -76,7 +76,10 @@ export default class Detail extends Component {
                     </TabPane>
                     <TabPane tab="项目地理位置" key="location">
                         <View style={styles.map}>
-                            <AMap />
+                            <AMap
+                                data={mapData}
+                                mapStyle={styles.mapStyle}
+                            />
                         </View>
                     </TabPane>
                 </Tabs>
