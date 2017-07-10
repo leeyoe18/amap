@@ -8,6 +8,7 @@ import Dimensions from 'Dimensions';
 
 import { Popover, Card, Button, SegmentedControl, Icon } from 'antd-mobile';
 import Lists from './lists';
+import Info from './info';
 
 const statusMap = {
     0: require('../../img/marker_0.png'),
@@ -24,7 +25,9 @@ class AMap extends Component {
         this.state = {
             mapType: 'standard',
             showsBuildings: true,
-            listVisible: false
+            listVisible: false,
+            visible: false,
+            markerData: {}
         };
     }
 
@@ -56,6 +59,29 @@ class AMap extends Component {
     toggleList = () => {
         this.setState({
             listVisible: !this.state.listVisible
+        });
+    };
+
+    hideCard = () => {
+        this.setState({
+            visible: false,
+            markerData: {}
+        });
+    };
+
+    toPath = () => {
+        const { navigate } = this.props.navigation;
+        const data = this.state.markerData;
+        navigate('Detail', {
+            path: data.id,
+            title: data.name
+        });
+    };
+
+    clickMarker = (marker) => {
+        this.setState({
+            visible: true,
+            markerData: marker.data
         });
     };
 
@@ -94,7 +120,7 @@ class AMap extends Component {
                         longitude: marker.longitude,
                     }}
                     key={index}
-                    onPress={() => this._animatedTo(marker)}
+                    onPress={() => this.clickMarker(marker)}
                 >
                     <View style={styles.customInfoWindow}>
                         <Text>{marker.title}</Text>
@@ -106,6 +132,17 @@ class AMap extends Component {
         if(this.state.listVisible) {
             list = (
                 <Lists {...this.props} animatedTo={this._animatedTo}/>
+            );
+        }
+        let card = null;
+        if(this.state.visible && this.props.navigation) {
+            card = (
+                <Info
+                    {...this.props}
+                    markerData={this.state.markerData}
+                    hideCard={this.hideCard}
+                    toPath={this.toPath}
+                />
             );
         }
         return (
@@ -140,6 +177,7 @@ class AMap extends Component {
                         </View>) : null
                 }
                 {list}
+                {card}
             </View>
         );
     }
@@ -165,7 +203,7 @@ const styles = StyleSheet.create({
         height: 40,
     },
     customTextBackground: {
-        borderRadius: 4,
+        borderRadius: 2,
         paddingLeft: 4,
         paddingRight: 4,
         backgroundColor: 'rgba(0,0,0,.4)'
@@ -178,7 +216,7 @@ const styles = StyleSheet.create({
     customInfoWindow: {
         backgroundColor: '#fff',
         padding: 10,
-        borderRadius: 1,
+        borderRadius: 2,
         elevation: 4,
         borderWidth: 1,
         borderColor: '#e8e8e8'
