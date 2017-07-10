@@ -10,11 +10,11 @@ import { Popover, Card, Button, SegmentedControl, Icon } from 'antd-mobile';
 import Lists from './lists';
 
 const statusMap = {
-    0: '#e62424',
-    1: '#fdfd09',
-    2: '#18ef57',
-    3: '#266fea',
-    4: '#fff'
+    0: require('../../img/marker_0.png'),
+    1: require('../../img/marker_1.png'),
+    2: require('../../img/marker_2.png'),
+    3: require('../../img/marker_3.png'),
+    4: require('../../img/marker_4.png')
 };
 
 class AMap extends Component {
@@ -79,8 +79,14 @@ class AMap extends Component {
                 <Marker
                     title={marker.title}
                     icon={() =>
-                        <View style={styles.customIcon}>
-                            <Image style={[styles.customIcon, {tintColor: statusMap[marker.data.status]}]} source={require('../../img/marker.png')}/>
+                        <View style={styles.customIconView}>
+                            <Image
+                                style={[styles.customIcon]}
+                                source={statusMap[marker.data.status]}
+                            />
+                            <View style={styles.customTextBackground}>
+                                <Text style={styles.customIconText}>{marker.title}</Text>
+                            </View>
                         </View>
                     }
                     coordinate={{
@@ -150,15 +156,32 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height - 210
     },
+    customIconView: {
+        height: 60,
+        alignItems: 'center'
+    },
     customIcon: {
         width: 40,
         height: 40,
+    },
+    customTextBackground: {
+        borderRadius: 4,
+        paddingLeft: 4,
+        paddingRight: 4,
+        backgroundColor: 'rgba(0,0,0,.4)'
+    },
+    customIconText: {
+        fontSize: 12,
+        textAlign: 'left',
+        color: '#fff'
     },
     customInfoWindow: {
         backgroundColor: '#fff',
         padding: 10,
         borderRadius: 1,
-        elevation: 4
+        elevation: 4,
+        borderWidth: 1,
+        borderColor: '#e8e8e8'
     },
     customMarker: {
         backgroundColor: '#009688',
