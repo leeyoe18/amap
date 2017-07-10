@@ -2,11 +2,12 @@
  * Created by yoe on 2017/7/6.
  */
 import React, {Component} from 'react';
-import {StyleSheet, Alert, Text, Image, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Alert, Text, Image, View, TouchableOpacity, ScrollView} from 'react-native';
 import {MapView, Marker} from 'react-native-amap3d';
 import Dimensions from 'Dimensions';
 
 import { Popover, Card, Button, SegmentedControl, Icon } from 'antd-mobile';
+import Lists from './lists';
 
 const statusMap = {
     0: '#e62424',
@@ -44,11 +45,10 @@ class AMap extends Component {
     };
 
     _animatedTo = (data) => {
-        debugger;
         this.mapView.animateTo({
             coordinate: {
-                latitude: data.latitude,
-                longitude: data.longitude,
+                latitude: data.latitude || data.lat,
+                longitude: data.longitude || data.long,
             }
         })
     };
@@ -96,6 +96,12 @@ class AMap extends Component {
                 </Marker>
             ))
         }
+        let list = null;
+        if(this.state.listVisible) {
+            list = (
+                <Lists {...this.props} animatedTo={this._animatedTo}/>
+            );
+        }
         return (
             <View style={styles.container}>
                 <MapView
@@ -122,12 +128,12 @@ class AMap extends Component {
                         <View style={styles.buttons}>
                             <View style={styles.button}>
                                 <TouchableOpacity  onPress={this.toggleList} >
-                                    <Icon type={'\ue639'} color={'#666'}/>
+                                    <Icon type={'\ue639'} color={this.state.listVisible ? '#108ee9' : '#666'}/>
                                 </TouchableOpacity>
                             </View>
                         </View>) : null
                 }
-
+                {list}
             </View>
         );
     }
@@ -149,17 +155,15 @@ const styles = StyleSheet.create({
         height: 40,
     },
     customInfoWindow: {
-        backgroundColor: '#8bc34a',
+        backgroundColor: '#fff',
         padding: 10,
-        borderRadius: 10,
-        elevation: 4,
-        borderWidth: 2,
-        borderColor: '#689F38',
+        borderRadius: 1,
+        elevation: 4
     },
     customMarker: {
         backgroundColor: '#009688',
         alignItems: 'center',
-        borderRadius: 5,
+        borderRadius: 1,
         padding: 5,
     },
     markerText: {
@@ -185,6 +189,26 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderWidth: 1,
         backgroundColor: 'rgba(255, 255, 255, 0.9)'
+    },
+    scroll: {
+        // overflow: 'visible',
+        position: 'absolute',
+        top: 64,
+        width: 240,
+        left: 16,
+        maxHeight: Dimensions.get('window').height - 300,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: 2,
+        borderWidth: 1,
+    },
+    scrollView: {
+        overflow: 'visible'
+    },
+    invisible: {
+        borderColor: '#ccc',
+    },
+    visible: {
+        borderColor: 'rgba(16,142,233,.7)'
     }
 });
 
