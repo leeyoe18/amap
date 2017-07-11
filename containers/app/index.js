@@ -15,16 +15,16 @@ import {
     Image,
     StyleSheet,
     Text,
-    AsyncStorage
+    AsyncStorage,
+    TouchableOpacity
 } from 'react-native';
 
-import { Icon, Button } from 'antd-mobile';
+import { Icon, Button, Popup, Modal } from 'antd-mobile';
 
 import All from '../all-projects';
 import New from '../new';
 import Detail from '../detail';
 import Analysis from '../analysis';
-import Amap from '../a-map';
 
 const MyTab = TabNavigator({
     All: {
@@ -59,12 +59,38 @@ const MyNav = StackNavigator({
     // 将TabNavigator包裹在StackNavigator里面可以保证跳转页面的时候隐藏tabbar
     Main:{
         screen: MyTab,
+        navigationOptions: ({navigation}) => rightOption({navigation})
     },
     Detail: {
         screen: Detail,
         navigationOptions: ({navigation}) => StackOptions({navigation})
     }
 });
+
+const rightOption = ({navigation}) => {
+    const headerRight = (
+        <TouchableOpacity
+            style={{marginRight:16}}
+            onPress={()=>{
+                Modal.alert('退出', '返回登录页面', [
+                    { text: '取消', onPress: () => {} },
+                    { text: '确定', onPress: () => {
+                        navigation.navigate('Login');
+                    }, style: { fontWeight: 'bold' } }
+                ]);
+            }}
+        >
+            <Icon
+                type={'\ue66a'}
+                size={24}
+                color='#fff'
+            />
+        </TouchableOpacity>
+    );
+    return {
+        headerRight
+    };
+};
 
 const StackOptions = ({navigation}) => {
     let {state,goBack} = navigation;
@@ -78,18 +104,20 @@ const StackOptions = ({navigation}) => {
     const headerTitle = state.params.title;
     const headerTitleStyle = {fontSize: 14,color:'white',alignSelf:'center'};
     // const headerBackTitle = false;
-    // const headerLeft = (
-    //     <Button
-    //         style={{marginLeft:13, opacity: .1}}
-    //         onClick={()=>{goBack()}}
-    //     >
-    //         <Icon
-    //             type='check'
-    //             size={30}
-    //         />
-    //     </Button>
-    // );
-    return {headerStyle,headerTitle,header, headerTitleStyle}
+    const headerLeft = (
+        <TouchableOpacity
+            style={{marginLeft:16}}
+            onPress={()=>{goBack()}}
+        >
+            <Icon
+                type={'\ue61c'}
+                size={24}
+                color='#fff'
+            />
+        </TouchableOpacity>
+    );
+    const headerRight = rightOption({navigation}).headerRight;
+    return {headerStyle, headerTitle, headerLeft, headerRight, header, headerTitleStyle}
 };
 
 const TabOptions = (tabBarTitle,navTitle, icon) => {

@@ -31,8 +31,11 @@ export default class BaiduMapDemo extends Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         Toast.loading('Loading...', 0);
+    }
+
+    componentDidMount() {
         get('getProjects', null, (data) => {
             Toast.hide();
             if(data.pass) {
