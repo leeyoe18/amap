@@ -60,15 +60,16 @@ class Info extends Component {
                                 </View>
                             </Flex.Item>
                         </Flex>
-
-                        <Button
-                            size="small"
-                            style={styles.btn}
-                            onClick={this.props.toPath}
-                            type="primary"
-                        >
-                            详情
-                        </Button>
+                        <View style={styles.btnView}>
+                            <Button
+                                size="small"
+                                style={styles.btn}
+                                onClick={this.props.toPath}
+                                type="primary"
+                            >
+                                详情
+                            </Button>
+                        </View>
                     </Card.Body>
                 </Card>
             </View>
@@ -111,6 +112,9 @@ const styles = StyleSheet.create({
     },
     imageBody: {
         padding: 8
+    },
+    btnView: {
+        paddingHorizontal: 16
     }
 });
 
