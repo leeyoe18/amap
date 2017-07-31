@@ -105,9 +105,9 @@ export default class Table extends Component {
         );
     };
 
-    _renderSeperator = (sectionID) => {
+    _renderSeperator = (sectionID, rowID) => {
         const type = getDeviceType();
-        if(type === 'pad') {
+        if(type === 'pad' || rowID == this.props.data.length - 1) {
             return null;
         }
         return (

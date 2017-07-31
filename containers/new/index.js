@@ -137,6 +137,7 @@ export default class BaiduMapDemo extends Component {
             columns.push({
                 title: 'Action',
                 key: 'Action',
+                idBtn: true,
                 render: (data) => (
                     <Button style={styles.btn} onClick={() => {this.handleClick(data)}}>
                         详情
@@ -144,11 +145,13 @@ export default class BaiduMapDemo extends Component {
                 )
             });
             type = (
-                <Table
-                    columns={columns}
-                    data={this.state.mapData}
-                    header={this.state.header}
-                />
+                <View style={styles.table}>
+                    <Table
+                        columns={columns}
+                        data={this.state.mapData}
+                        header={this.state.header}
+                    />
+                </View>
             );
         }
         return (
@@ -240,5 +243,8 @@ const styles = StyleSheet.create({
     },
     green: {
         color: '#008000'
+    },
+    table: {
+        height: Dimensions.get('window').height - 190
     }
 });

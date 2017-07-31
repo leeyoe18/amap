@@ -155,11 +155,13 @@ export default class AllProjects extends Component {
                 )
             });
             type = (
-                <Table
-                    columns={columns}
-                    data={this.state.mapData}
-                    header={this.state.header}
-                />
+                <View style={styles.table}>
+                    <Table
+                        columns={columns}
+                        data={this.state.mapData}
+                        header={this.state.header}
+                    />
+                </View>
             );
         }
         return (
@@ -251,5 +253,8 @@ const styles = StyleSheet.create({
     },
     green: {
         color: '#008000'
+    },
+    table: {
+        height: Dimensions.get('window').height - 190
     }
 });
