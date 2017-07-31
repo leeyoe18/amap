@@ -12,13 +12,12 @@ import {
 import Dimensions from 'Dimensions';
 import { Card, Tabs, List, WingBlank, Flex, SegmentedControl, Button, Toast, Icon } from 'antd-mobile';
 import { get } from '../../services/project';
-// import BaiduMap from '../baidu-map';
 import AMap from '../a-map';
 import Table from './table';
 
 const Item = List.Item;
 
-export default class BaiduMapDemo extends Component {
+export default class AllProjects extends Component {
 
     constructor(props) {
         super(props);

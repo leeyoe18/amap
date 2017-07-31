@@ -6,10 +6,11 @@ import {StyleSheet, Alert, Text, Image, View, TouchableOpacity, ScrollView} from
 import {MapView, Marker} from 'react-native-amap3d';
 import Dimensions from 'Dimensions';
 import { getDeviceType } from '../../common/device';
-import { Popover, Card, Button, SegmentedControl, Icon } from 'antd-mobile';
+import { Popover, Card, Button, SegmentedControl, Icon, Popup } from 'antd-mobile';
 import Lists from './lists';
 import Info from './info';
 import MapType from './map-type';
+import ListsPopup from './lists-popup';
 
 const statusMap = {
     0: require('../../img/marker_0.png'),
@@ -58,9 +59,22 @@ class AMap extends Component {
     };
 
     toggleList = () => {
-        this.setState({
-            listVisible: !this.state.listVisible
-        });
+        const type = getDeviceType();
+        if(type === 'phone') {
+            Popup.show(
+                <View>
+                    <ListsPopup
+                        {...this.props}
+                        animatedTo={this._animatedTo}
+                    />
+                </View>, {
+                    animationType: 'slide-up', maskClosable: true
+                });
+        } else {
+            this.setState({
+                listVisible: !this.state.listVisible
+            });
+        }
     };
 
     hideCard = () => {

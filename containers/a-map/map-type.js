@@ -8,7 +8,7 @@ import Dimensions from 'Dimensions';
 import { Card, Button, SegmentedControl, Icon, Flex, Popup, List } from 'antd-mobile';
 import { getDeviceType } from '../../common/device';
 
-class Info extends Component {
+class MapType extends Component {
 
     constructor(props) {
         super(props);
@@ -18,9 +18,6 @@ class Info extends Component {
     }
 
     toggleList = () => {
-        const maskProps = {
-            onTouchStart: e => e.preventDefault(),
-        };
         Popup.show(<View>
             <List
                 renderHeader={this.renderHeader}
@@ -112,4 +109,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Info;
+export default MapType;

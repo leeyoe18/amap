@@ -15,7 +15,7 @@ const statusMap = {
     4: '白灯'
 };
 
-class AMap extends Component {
+class Lists extends Component {
 
     constructor(props) {
         super(props);
@@ -124,4 +124,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AMap;
+export default Lists;

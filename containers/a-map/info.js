@@ -36,11 +36,11 @@ class Info extends Component {
                             </Text>
                         }
                         extra={
-                            <Button onClick={this.props.hideCard} style={styles.cardExtra}>
+                            <TouchableOpacity onPress={this.props.hideCard} style={styles.cardExtra}>
                                 <Text style={styles.cardText} onClick={this.props.hideCard}>
                                     &times;
                                 </Text>
-                            </Button>
+                            </TouchableOpacity>
                         }
                     />
                     <Card.Body>
