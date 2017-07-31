@@ -147,6 +147,7 @@ export default class AllProjects extends Component {
             columns.push({
                 title: 'Action',
                 key: 'Action',
+                isBtn: true,
                 render: (data) => (
                     <Button style={styles.btn} onClick={() => {this.handleClick(data)}}>
                         详情
