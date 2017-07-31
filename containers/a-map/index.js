@@ -5,10 +5,11 @@ import React, {Component} from 'react';
 import {StyleSheet, Alert, Text, Image, View, TouchableOpacity, ScrollView} from 'react-native';
 import {MapView, Marker} from 'react-native-amap3d';
 import Dimensions from 'Dimensions';
-
+import { getDeviceType } from '../../common/device';
 import { Popover, Card, Button, SegmentedControl, Icon } from 'antd-mobile';
 import Lists from './lists';
 import Info from './info';
+import MapType from './map-type';
 
 const statusMap = {
     0: require('../../img/marker_0.png'),
@@ -151,7 +152,6 @@ class AMap extends Component {
                     locationEnabled
                     mapType={this.state.mapType}
                     showsBuildings={this.state.showsBuildings}
-                    showsLocationButton={true}
                     rotateEnabled={false}
                     zoomLevel={12}
                     coordinate={center}
@@ -160,12 +160,9 @@ class AMap extends Component {
                 >
                     {markerViews}
                 </MapView>
-                <View style={styles.mapType}>
-                    <SegmentedControl
-                        values={['普通', '卫星', '导航']}
-                        onValueChange={this.onChangeMapType}
-                    />
-                </View>
+                <MapType
+                    onValueChange={this.onChangeMapType}
+                />
                 {
                     this.props.navigation ? (
                         <View style={styles.buttons}>
