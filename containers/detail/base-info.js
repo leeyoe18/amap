@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Flex, WhiteSpace } from 'antd-mobile';
 import Dimensions from 'Dimensions';
+import { isTablet } from '../../common/device';
 
 const Item = Flex.Item;
 
@@ -30,6 +31,28 @@ export default class BaseInfo extends Component {
             <ScrollView contentContainerStyle={styles.container}>
                 {data.map((item, index) => {
                     if(item.length > 1) {
+                        if(!isTablet()) {
+                            return (
+                                <View key={index}>
+                                    <Flex style={styles.flex}>
+                                        <Item style={styles.label}>
+                                            <Text style={styles.padding}>{item[0].label}</Text>
+                                        </Item>
+                                        <Item style={styles.value}>
+                                            <Text style={styles.padding}>{item[0].value}</Text>
+                                        </Item>
+                                    </Flex>
+                                    <Flex style={styles.flex}>
+                                        <Item style={styles.label}>
+                                            <Text style={styles.padding}>{item[1].label}</Text>
+                                        </Item>
+                                        <Item style={styles.value}>
+                                            <Text style={styles.padding}>{item[1].value}</Text>
+                                        </Item>
+                                    </Flex>
+                                </View>
+                            )
+                        }
                         return (
                             <Flex key={index} style={styles.flex}>
                                 <Item style={styles.label}>

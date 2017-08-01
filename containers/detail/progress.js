@@ -13,7 +13,7 @@ import { Grid, Button, Icon } from 'antd-mobile';
 import config from '../../common/html';
 import Dimensions from 'Dimensions';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { getDeviceType } from '../../common/device';
+import { isTablet } from '../../common/device';
 
 export default class Progress extends Component {
 
@@ -136,7 +136,7 @@ export default class Progress extends Component {
             <ScrollView contentContainerStyle={styles.container}>
                 <Grid
                     data={data}
-                    columnNum={getDeviceType()==='pad' ? 4 : 2}
+                    columnNum={isTablet() ? 3 : 1}
                     hasLine={false}
                     renderItem={(dataItem, index) => (
                         <View key={index} style={styles.imgContainer}>
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5'
     },
     img: {
-        width: (Dimensions.get('window').width - 48) / ( getDeviceType() === 'pad' ? 4 : 2 ) - 42,
+        width: (Dimensions.get('window').width - 48) / ( isTablet() ? 3 : 1 ) - 42,
         height: 150
     },
     textContainer: {
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
         padding: 8,
         backgroundColor: 'rgba( 0, 0, 0, .43)',
         height: 64,
-        width: (Dimensions.get('window').width - 48) / ( getDeviceType() === 'pad' ? 4 : 2 )
+        width: (Dimensions.get('window').width - 48) / ( isTablet() ? 3 : 1 )
     },
     text: {
         color: '#fff'
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     footer: {
         position: 'absolute',
         width: Dimensions.get('window').width,
-        bottom: 0,
+        bottom: 16,
         left: (Dimensions.get('window').width / 2) - 24
     },
     footerText: {

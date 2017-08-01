@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Dimensions from 'Dimensions';
 import { Card, Tabs, List, WingBlank, Flex, Button } from 'antd-mobile';
-import { getDeviceType } from '../../common/device';
+import { isTablet } from '../../common/device';
 
 const Item = List.Item;
 
@@ -30,13 +30,12 @@ export default class Table extends Component {
     }
 
     renderHeader = () => {
-        const type = getDeviceType();
         return (
             <View style={styles.table}>
                 <ListView
                     dataSource={this.state.ds.cloneWithRows(this.props.data)}
                     renderHeader={(rowData) => {
-                        if(type === 'pad') {
+                        if(isTablet()) {
                             return (
                                 <View style={styles.header} >
                                     {
@@ -53,7 +52,7 @@ export default class Table extends Component {
                         }
                     }}
                     renderRow={(rowData) => {
-                        if(type === 'pad') {
+                        if(isTablet()) {
                             return (
                                 <View style={styles.row}>
                                     {
@@ -106,8 +105,7 @@ export default class Table extends Component {
     };
 
     _renderSeperator = (sectionID, rowID) => {
-        const type = getDeviceType();
-        if(type === 'pad' || rowID == this.props.data.length - 1) {
+        if(isTablet() || rowID == this.props.data.length - 1) {
             return null;
         }
         return (

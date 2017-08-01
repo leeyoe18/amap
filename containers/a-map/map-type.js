@@ -6,7 +6,7 @@ import {StyleSheet, Alert, Text, Image, View, TouchableOpacity, ScrollView} from
 import Dimensions from 'Dimensions';
 
 import { Card, Button, SegmentedControl, Icon, Flex, Popup, List } from 'antd-mobile';
-import { getDeviceType } from '../../common/device';
+import { isTablet } from '../../common/device';
 
 class MapType extends Component {
 
@@ -54,8 +54,7 @@ class MapType extends Component {
     };
 
     render() {
-        const type = getDeviceType();
-        if(type === 'pad') {
+        if(isTablet()) {
             return (
                 <View style={styles.mapType}>
                     <SegmentedControl

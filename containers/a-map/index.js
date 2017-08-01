@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Alert, Text, Image, View, TouchableOpacity, ScrollView} from 'react-native';
 import {MapView, Marker} from 'react-native-amap3d';
 import Dimensions from 'Dimensions';
-import { getDeviceType } from '../../common/device';
+import { isTablet } from '../../common/device';
 import { Popover, Card, Button, SegmentedControl, Icon, Popup } from 'antd-mobile';
 import Lists from './lists';
 import Info from './info';
@@ -59,8 +59,7 @@ class AMap extends Component {
     };
 
     toggleList = () => {
-        const type = getDeviceType();
-        if(type === 'phone') {
+        if(!isTablet()) {
             Popup.show(
                 <View>
                     <ListsPopup

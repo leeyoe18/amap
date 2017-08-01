@@ -255,6 +255,7 @@ const styles = StyleSheet.create({
         color: '#008000'
     },
     table: {
-        height: Dimensions.get('window').height - 190
+        height: Dimensions.get('window').height - 190,
+        paddingBottom: 32
     }
 });

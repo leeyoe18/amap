@@ -4,9 +4,6 @@
 
 import DeviceInfo from 'react-native-device-info';
 
-export function getDeviceType () {
-    if(DeviceInfo.isTablet()) {
-        return 'pad';
-    }
-    return 'phone';
+export function isTablet () {
+    return DeviceInfo.isTablet();
 }
