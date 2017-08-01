@@ -2,12 +2,11 @@
  * Created by yoe on 2017/7/21.
  */
 
-import Dimensions from 'Dimensions';
+import DeviceInfo from 'react-native-device-info';
 
 export function getDeviceType () {
-    const device = Dimensions.get('window');
-    if(device.width * device.scale < 900) {
-        return 'phone';
+    if(DeviceInfo.isTablet()) {
+        return 'pad';
     }
-    return 'pad';
+    return 'phone';
 }
