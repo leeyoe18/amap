@@ -7,15 +7,22 @@ import React, {
 } from 'react';
 
 import {
-    StyleSheet, View, Platform, PixelRatio, Text, ScrollView, Image
+    StyleSheet, View, Platform, PixelRatio, Text, ScrollView, Image, Modal, TouchableOpacity,
 } from 'react-native';
-import { Grid } from 'antd-mobile';
+import { Grid, Button, Icon } from 'antd-mobile';
+import config from '../../common/html';
 import Dimensions from 'Dimensions';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import { getDeviceType } from '../../common/device';
 
 export default class Progress extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            visible: false,
+            index: 0
+        };
     }
 
     getColumns = () => {
@@ -45,15 +52,69 @@ export default class Progress extends Component {
         });
         return cols;
 
+        // return (
+        //     <View style={styles.flex}>
+        //         {
+        //             progress.map((data,index) => (
+        //                 <View key={index} style={styles.item}>
+        //                     <Text>{data.title}</Text>
+        //                 </View>
+        //             ))
+        //         }
+        //     </View>
+        // );
+    };
+
+    showImage = () => {
+        this.setState({
+            visible: true
+        });
+    };
+
+    hideImage = () => {
+        this.setState({
+            visible: false
+        });
+    };
+
+    renderHeader = () => {
         return (
-            <View style={styles.flex}>
-                {
-                    progress.map((data,index) => (
-                        <View key={index} style={styles.item}>
-                            <Text>{data.title}</Text>
-                        </View>
-                    ))
-                }
+            <View style={styles.header}>
+                <Button onClick={this.hideImage}>关闭</Button>
+            </View>
+        )
+    };
+
+    renderArrowLeft = () => {
+        if(this.state.index === 0) return null;
+        return (
+            <View>
+                <Icon type={'\ue620'}/>
+            </View>
+        );
+    };
+
+    renderArrowRight = () => {
+        if(this.state.index === this.props.data.progress.length - 1) return null;
+        return (
+            <View>
+                <Icon type={'\ue621'}/>
+            </View>
+        );
+    };
+
+    handleChangePage = (index) => {
+        this.setState({
+            index
+        });
+    };
+
+    renderFooter = () => {
+        return (
+            <View style={styles.footer}>
+                <TouchableOpacity onPress={this.hideImage}>
+                    <Text style={styles.footerText}>关闭</Text>
+                </TouchableOpacity>
             </View>
         );
     };
@@ -62,29 +123,47 @@ export default class Progress extends Component {
         const progress = this.props.data.progress || [];
         const data = progress.map(item => {
             return {
-                img: 'http://106.15.44.21:3000' + item.url,
+                img: config.html + item.url,
                 text: item.title
             };
+        });
+        const images = progress.map(item => {
+            return {
+                url: config.html + item.url
+            }
         });
         return (
             <ScrollView contentContainerStyle={styles.container}>
                 <Grid
                     data={data}
-                    columnNum={4}
+                    columnNum={getDeviceType()==='pad' ? 4 : 2}
                     hasLine={false}
                     renderItem={(dataItem, index) => (
                         <View key={index} style={styles.imgContainer}>
                             <View style={styles.imgContain}>
-                                <Image source={{uri: dataItem.img}} style={styles.img}/>
-                                <View style={styles.textContainer}>
-                                    <Text style={styles.text}>
-                                        {dataItem.text}
-                                    </Text>
-                                </View>
+                                <TouchableOpacity onPress={this.showImage}>
+                                    <Image source={{uri: dataItem.img}} style={styles.img}/>
+                                </TouchableOpacity>
+                                    <View style={styles.textContainer}>
+                                        <Text style={styles.text}>
+                                            {dataItem.text}
+                                        </Text>
+                                    </View>
+
                             </View>
                         </View>
                     )}
                 />
+                <Modal animationType="slide" visible={this.state.visible} transparent={true}>
+                    <ImageViewer
+                        imageUrls={images}
+                        index={this.state.index}
+                        onChange={this.handleChangePage}
+                        renderArrowLeft={this.renderArrowLeft}
+                        renderArrowRight={this.renderArrowRight}
+                        renderFooter={this.renderFooter}
+                    />
+                </Modal>
             </ScrollView>
         );
     }
@@ -104,17 +183,36 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5'
     },
     img: {
-        width: (Dimensions.get('window').width - 48) / 4 - 42,
+        width: (Dimensions.get('window').width - 48) / ( getDeviceType() === 'pad' ? 4 : 2 ) - 42,
         height: 150
     },
     textContainer: {
         position: 'absolute',
         bottom: 0,
         padding: 8,
-        backgroundColor: 'rgba(0,0,0,.43)',
-        width: (Dimensions.get('window').width - 48) / 4
+        backgroundColor: 'rgba( 0, 0, 0, .43)',
+        height: 64,
+        width: (Dimensions.get('window').width - 48) / ( getDeviceType() === 'pad' ? 4 : 2 )
     },
     text: {
         color: '#fff'
+    },
+    header: {
+        position: 'absolute',
+        top: 0,
+        right: 0
+    },
+    headerText: {
+        fontSize: 48,
+        color: '#fff',
+        textAlign: 'center'
+    },
+    footer: {
+        width: Dimensions.get('window').width,
+        marginBottom: 64
+    },
+    footerText: {
+        color: '#fff',
+        fontSize: 24
     }
 });

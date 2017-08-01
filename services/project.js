@@ -3,8 +3,8 @@
  */
 // import { getIP } from '../common/ip';
 // import { get, post } from '../common/xFetch2';
-
-const ip = 'http://106.15.44.21:3000/api/';
+import config from '../common/html';
+const ip = config.html + '/api/';
 export function get(url,params,callback){
     url = ip + url;
     if (params) {
