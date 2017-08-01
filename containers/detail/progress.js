@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     },
     img: {
         width: (Dimensions.get('window').width - 48) / ( isTablet() ? 3 : 1 ) - 42,
-        height: 150
+        height: isTablet() ? 150 : 300
     },
     textContainer: {
         position: 'absolute',
