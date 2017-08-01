@@ -208,8 +208,10 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     footer: {
+        position: 'absolute',
         width: Dimensions.get('window').width,
-        marginBottom: 64
+        bottom: 0,
+        left: (Dimensions.get('window').width / 2) - 24
     },
     footerText: {
         color: '#fff',
