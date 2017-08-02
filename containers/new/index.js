@@ -7,13 +7,15 @@ import React, {
 } from 'react';
 
 import {
-    StyleSheet, View, Platform, PixelRatio, Text
+    StyleSheet, View, Platform, PixelRatio, Text, TouchableOpacity
 } from 'react-native';
 import Dimensions from 'Dimensions';
-import { Card, Tabs, List, WingBlank, Flex, SegmentedControl, Button, Toast } from 'antd-mobile';
+import { Card, Tabs, List, WingBlank, Flex, SegmentedControl, Button, Popup, Icon } from 'antd-mobile';
 import { get } from '../../services/project';
 import Table from '../all-projects/table';
+import { isTablet } from '../../common/device';
 import AMap from '../a-map';
+import Loading from '../../components/loading';
 
 const Item = List.Item;
 
@@ -26,14 +28,15 @@ export default class BaiduMapDemo extends Component {
             data: {},
             activeKey: 'all',
             mapData: [],
-            type: 'map'
+            type: 'map',
+            index: 0
         };
     }
 
     componentDidMount() {
-        Toast.loading('Loading...', 0);
+        // Toast.loading('Loading...', 0);
         get('getProjects?isBatch=true', null, (data) => {
-            Toast.hide();
+            // Toast.hide();
             if(data.pass) {
                 this.setState({
                     data: data.data,
@@ -95,6 +98,51 @@ export default class BaiduMapDemo extends Component {
         });
     };
 
+    handleValueChange = (index) => {
+        if(index === 0) {
+            this.setState({
+                mapData: this.state.data.rows,
+                index
+            });
+        } else {
+            const years = this.getYears(this.state.data);
+            const year = Object.keys(years)[index - 1];
+            this.setState({
+                mapData: years[year],
+                index
+            });
+        }
+        Popup.hide();
+    };
+
+    showItems = () => {
+        const years = this.getYears(this.state.data);
+        let total = 0;
+        if(this.state.data.rows) total = this.state.data.rows.length;
+        const items = [`全部 (${total})`];
+        for(const year of Object.keys(years)) {
+            const item = years[year];
+            items.push(`${year} (${item.length})`);
+        }
+        Popup.show(<View>
+            <List>
+                {
+                    items.map((i, index) => (
+                        <List.Item key={index}>
+                            <TouchableOpacity onPress={()=>this.handleValueChange(index)}>
+                                <Text style={this.state.index === index ? styles.activeText : null}>
+                                    {i}
+                                </Text>
+                            </TouchableOpacity>
+                        </List.Item>
+                    ))
+                }
+            </List>
+        </View>, {
+            animationType: 'slide-down', maskClosable: true
+        });
+    };
+
     render() {
         const years = this.getYears(this.state.data);
         let total = 0;
@@ -105,11 +153,16 @@ export default class BaiduMapDemo extends Component {
             items.push(`${year} (${item.length})`);
         }
         let type = (
-            <AMap
-                data={this.state.mapData}
-                navigation={this.props.navigation}
-            />
+            <Loading visible={true} overlayColor="rgba(0,0,0,.25)"/>
         );
+        if(total > 0) {
+            type = (
+                <AMap
+                    data={this.state.mapData}
+                    navigation={this.props.navigation}
+                />
+            );
+        }
 
         if(this.state.type === 'table') {
             const columns = this.state.header.map(data => {
@@ -160,11 +213,15 @@ export default class BaiduMapDemo extends Component {
                     <WingBlank style={styles.toolbar}>
                         <Flex>
                             <Flex.Item style={styles.total}>
-                                <SegmentedControl
-                                    selectedIndex={0}
-                                    values={items}
-                                    onChange={this.onChange}
-                                />
+                                {
+                                    isTablet() ? (
+                                        <SegmentedControl
+                                            selectedIndex={0}
+                                            values={items}
+                                            onChange={this.onChange}
+                                        />
+                                    ) : <Button style={styles.btns} onClick={this.showItems}>{items[this.state.index]}</Button>
+                                }
                             </Flex.Item>
                             <Flex.Item>
                                 <SegmentedControl
@@ -190,7 +247,7 @@ const styles = StyleSheet.create({
         marginBottom: 12
     },
     total: {
-        flex: 6,
+        flex: isTablet() ? 6 : 1,
         marginRight: 8
     },
     style0: {
@@ -246,5 +303,11 @@ const styles = StyleSheet.create({
     },
     table: {
         height: Dimensions.get('window').height - 190
+    },
+    btns: {
+        height: 30
+    },
+    activeText: {
+        color: '#3b99fc'
     }
 });

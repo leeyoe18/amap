@@ -156,7 +156,7 @@ export default class AllProjects extends Component {
             items.push(`${year} (${item.length})`);
         }
         let type = (
-            <Loading visible={true} overlayColor="#efefef"/>
+            <Loading visible={true} overlayColor="rgba(0,0,0,.25)"/>
         );
         if(total > 0) {
             type = (
