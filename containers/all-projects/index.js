@@ -15,7 +15,7 @@ import { get } from '../../services/project';
 import AMap from '../a-map';
 import Table from './table';
 import { isTablet } from '../../common/device';
-
+import Loading from '../../components/loading';
 const Item = List.Item;
 
 export default class AllProjects extends Component {
@@ -33,12 +33,12 @@ export default class AllProjects extends Component {
     }
 
     componentWillMount() {
-        Toast.loading('Loading...', 0);
+        // Toast.loading('Loading...', 0);
     }
 
     componentDidMount() {
         get('getProjects', null, (data) => {
-            Toast.hide();
+            // Toast.hide();
             if(data.pass) {
                 this.setState({
                     data: data.data,
@@ -156,9 +156,7 @@ export default class AllProjects extends Component {
             items.push(`${year} (${item.length})`);
         }
         let type = (
-            <View>
-                <Text>正在加载数据</Text>
-            </View>
+            <Loading visible={true} overlayColor="#efefef"/>
         );
         if(total > 0) {
             type = (
